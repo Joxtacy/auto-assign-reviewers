@@ -1,0 +1,31 @@
+name: "Automagically Assign PR Reviewers"
+description: "Automagically assigns reviewers based on current workload and recent activity"
+author: "Joxtacy"
+
+inputs:
+  github_token:
+    description: "GitHub token for API access (use secrets.GITHUB_TOKEN)"
+    required: true
+  team_members:
+    description: 'Comma-separated list of GitHub usernames (e.g., "alice,bob,charlie")'
+    required: true
+  weight_open_prs:
+    description: "Weight multiplier for number of open PRs currently assigned (default: 10)"
+    required: false
+    default: "10"
+  weight_lines_per_100:
+    description: "Weight multiplier for lines of code per 100 lines in open reviews (default: 1)"
+    required: false
+    default: "1"
+  weight_recent_reviews:
+    description: "Weight multiplier for PRs reviewed in last 7 days (default: 3)"
+    required: false
+    default: "3"
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
+
+branding:
+  icon: "users"
+  color: "blue"

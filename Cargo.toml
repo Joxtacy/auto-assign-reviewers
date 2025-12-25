@@ -1,0 +1,15 @@
+[package]
+name = "auto-assign-reviewers"
+description = "A GitHub Action that automatically assigns reviewers based on their workload in terms of other reviews"
+version = "0.1.0"
+edition = "2024"
+readme = "README.md"
+repository = "https://github.com/Joxtacy/auto-assign-reviewers"
+
+[dependencies]
+anyhow = "1.0.100"
+chrono = "0.4.42"
+octocrab = "0.49.3"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.147"
+tokio = { version = "1.48.0", features = ["full"] }
