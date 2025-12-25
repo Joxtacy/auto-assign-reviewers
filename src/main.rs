@@ -58,7 +58,6 @@ impl Config {
 
 #[derive(Debug)]
 struct ReviewerWorkload {
-    username: String,
     open_prs_count: usize,        // How many PRs they're reviewing
     total_lines_in_review: usize, // Total lines across all PRs
 }
@@ -172,7 +171,6 @@ async fn fetch_open_prs_workload(
         workload.insert(
             member.clone(),
             ReviewerWorkload {
-                username: member.clone(),
                 open_prs_count: 0,
                 total_lines_in_review: 0,
             },
