@@ -20,3 +20,16 @@ docs for more detail on building and pushing.
 
 ### References
 * [Docker's Rust guide](https://docs.docker.com/language/rust/)
+
+### Manual build and push to ghcr instructions
+
+```
+docker buildx create --name linux-amd64-arm64 --use
+```
+
+```
+docker buildx build --platform linux/amd64,linux/arm64 \
+  -t ghcr.io/joxtacy/auto-assign-reviewers:<version> \
+  -t ghcr.io/joxtacy/auto-assign-reviewers:latest \
+  --push .
+```
