@@ -20,7 +20,7 @@ struct Config {
 impl Config {
     fn from_env() -> Result<Self> {
         Ok(Config {
-            github_token: env::var("INPUT_GITHUB_TOKEN").context("Missing INPUT_GITHUB-TOKEN")?,
+            github_token: env::var("INPUT_GITHUB_TOKEN").context("Missing INPUT_GITHUB_TOKEN")?,
             team_members: env::var("INPUT_TEAM_MEMBERS")
                 .context("Missing INPUT_TEAM_MEMBERS")?
                 .split(',')
