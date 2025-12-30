@@ -40,6 +40,7 @@ jobs:
             type=semver,pattern={{version}},value=${{ github.event.inputs.tag || github.ref_name }}
             type=semver,pattern={{major}}.{{minor}},value=${{ github.event.inputs.tag || github.ref_name }}
             type=semver,pattern={{major}},value=${{ github.event.inputs.tag || github.ref_name }}
+            type=raw,value=latest,enable={{is_default_branch}}
             type=sha
 
       - name: Build and push
