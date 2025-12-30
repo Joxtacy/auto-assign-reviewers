@@ -8,7 +8,6 @@ on:
       - "Cargo.lock"
       - ".github/workflows/pr-docker-build.yml"
       - "src"
-      # Add other relevant paths
 
 jobs:
   test-build:
