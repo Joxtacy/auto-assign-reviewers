@@ -15,6 +15,7 @@ struct Config {
     repo_owner: String,
     repo_name: String,
     pr_number: u64,
+    number_of_reviewers: u32,
 }
 
 impl Config {
@@ -38,6 +39,10 @@ impl Config {
                 .unwrap_or_else(|_| "3".to_string())
                 .parse()
                 .context("Invalid weight-recent-reviews")?,
+            number_of_reviewers: env::var("INPUT_NUMBER_OF_REVIEWERS")
+                .unwrap_or_else(|_| "1".to_string())
+                .parse()
+                .context("Invalid number-of-reviewers")?,
             repo_owner: env::var("GITHUB_REPOSITORY_OWNER")
                 .context("Missing GITHUB_REPOSITORY_OWNER")?,
             repo_name: env::var("GITHUB_REPOSITORY")
@@ -325,6 +330,7 @@ async fn main() -> Result<()> {
     println!("  Repository: {}/{}", config.repo_owner, config.repo_name);
     println!("  PR Number: {}", config.pr_number);
     println!("  Team Members: {:?}", config.team_members);
+    println!("  Number of Reviewers: {:?}", config.number_of_reviewers);
     println!("\n⚖️  Weights:");
     println!("  Open PRs: {}", config.weight_open_prs);
     println!("  Lines per 100: {}", config.weight_lines);
@@ -385,10 +391,17 @@ async fn main() -> Result<()> {
         );
     }
 
-    // Assign the reviewer with the lowest score
-    if let Some(winner) = scores.first() {
+    // Assign the reviewers with the lowest scores
+    let winners = scores.iter().take(config.number_of_reviewers as usize);
+
+    if winners.len() == 0 {
+        println!(
+            "\n⚠️  No eligible reviewers found (is everyone except the author on the team list?)"
+        );
+    }
+    for (position, winner) in winners.enumerate() {
         println!("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        println!("✨ Best choice: @{}", winner.username);
+        println!("✨ #{} choice: @{}", position + 1, winner.username);
 
         assign_reviewer(
             &octocrab,
@@ -400,12 +413,8 @@ async fn main() -> Result<()> {
         .await?;
 
         println!(
-            "\n🎉 Done! PR #{} has been assigned to @{}",
+            "\n🎉 PR #{} has been assigned to @{}",
             config.pr_number, winner.username
-        );
-    } else {
-        println!(
-            "\n⚠️  No eligible reviewers found (is everyone except the author on the team list?)"
         );
     }
 

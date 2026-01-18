@@ -55,6 +55,7 @@ export INPUT_TEAM_MEMBERS="alice,alice,bob"
 export INPUT_WEIGHT_OPEN_PRS="10"
 export INPUT_WEIGHT_LINES_PER_100="1"
 export INPUT_WEIGHT_RECENT_REVIEWS="3"
+export INPUT_NUMBER_OF_REVIEWERS="2"
 
 # GitHub Actions automatically provides these
 export GITHUB_REPOSITORY_OWNER="$OWNER"

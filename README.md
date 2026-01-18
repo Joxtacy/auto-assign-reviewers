@@ -104,6 +104,7 @@ Customize the scoring weights to match your team's preferences:
 | `weight_open_prs` | Weight for currently open PRs | No | `10` |
 | `weight_lines_per_100` | Weight per 100 lines of code | No | `1` |
 | `weight_recent_reviews` | Weight for reviews in last 7 days | No | `3` |
+| `number_of_reviewers` | Number of reviewers to assign | No | `1` |
 
 ---
 

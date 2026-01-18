@@ -21,6 +21,10 @@ inputs:
     description: "Weight multiplier for PRs reviewed in last 7 days (default: 3)"
     required: false
     default: "3"
+  number_of_reviewers:
+    description: "Number of reviewers to assign (default: 1)"
+    required: false
+    default: "1"
 
 runs:
   using: "docker"

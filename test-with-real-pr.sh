@@ -53,6 +53,7 @@ export INPUT_TEAM_MEMBERS="alice,bob,charlie" # Update with your team
 export INPUT_WEIGHT_OPEN_PRS="10"
 export INPUT_WEIGHT_LINES_PER_100="1"
 export INPUT_WEIGHT_RECENT_REVIEWS="3"
+export INPUT_NUMBER_OF_REVIEWERS="2"
 export GITHUB_REPOSITORY_OWNER="$OWNER"
 export GITHUB_REPOSITORY="$REPO"
 export GITHUB_EVENT_PATH="/tmp/test-action/event.json"

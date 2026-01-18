@@ -23,3 +23,4 @@ jobs:
           weight_open_prs: 10
           weight_lines_per_100: 1
           weight_recent_reviews: 3
+          number_of_reviewers: 1
