@@ -1,7 +1,7 @@
 [package]
 name = "auto-assign-reviewers"
 description = "A GitHub Action that automatically assigns reviewers based on their workload in terms of other reviews"
-version = "0.1.2"
+version = "0.2.0"
 edition = "2024"
 readme = "README.md"
 repository = "https://github.com/Joxtacy/auto-assign-reviewers"

@@ -8,14 +8,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Nothing yet
+
+### Changed
+- Nothing yet
+
+### Fixed
+- Nothing yet
+
+## [0.2.0-rc.1] - 2026-07-07
+
+### Added
 - `team_slug` input to build the reviewer pool from an org team's members, combined with any manual `team_members` (requires a token with org read access)
 - `exclude` input to remove specific usernames from the reviewer pool (e.g. a manager who doesn't review)
 
 ### Changed
 - `team_members` is now optional when `team_slug` is set; at least one of the two is required
-
-### Fixed
-- Nothing yet
 
 ## [0.1.2] - 2026-07-07
 
@@ -46,7 +54,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for pagination when handling many open PRs
 - Rate limit handling for large repositories
 
-[Unreleased]: https://github.com/Joxtacy/auto-assign-reviewers/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/Joxtacy/auto-assign-reviewers/compare/v0.2.0-rc.1...HEAD
+[0.2.0-rc.1]: https://github.com/Joxtacy/auto-assign-reviewers/compare/v0.1.2...v0.2.0-rc.1
 [0.1.2]: https://github.com/Joxtacy/auto-assign-reviewers/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/Joxtacy/auto-assign-reviewers/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/Joxtacy/auto-assign-reviewers/releases/tag/v0.1.0

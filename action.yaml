@@ -34,7 +34,7 @@ inputs:
 
 runs:
   using: "docker"
-  image: "docker://ghcr.io/joxtacy/auto-assign-reviewers:latest"
+  image: "docker://ghcr.io/joxtacy/auto-assign-reviewers:0.2.0-rc.1"
 
 branding:
   icon: "users"
