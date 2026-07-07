@@ -9,8 +9,15 @@ final step. Do the prep on `main`.
 
 ## 1. Prep (on `main`)
 
-Pick the next version, e.g. `0.2.0`. Then:
+Pick the next version, e.g. `0.2.0`. Then, **on a release-prep commit** (so the
+tag captures the exact-version image pin — see below):
 
+- [ ] Pin **`action.yaml`** `runs.image` to the version being released:
+      `docker://ghcr.io/joxtacy/auto-assign-reviewers:0.2.0` (no `v` prefix — the
+      release workflow's metadata-action strips it). This is what makes
+      `@v0.2.0` deterministically run the `0.2.0` image. `main` itself stays on
+      `:latest`; only the tagged release commit carries the exact pin. **Easy to
+      miss — if you skip it, the release runs the previous image.**
 - [ ] Bump `version` in **`Cargo.toml`** (this is easy to forget — it does not
       auto-update from the tag).
 - [ ] Update **`CHANGELOG.md`**: move `[Unreleased]` items under a new
@@ -42,6 +49,20 @@ gh release create v0.2.0-rc.1 --prerelease --title "v0.2.0-rc.1" --target main
 - [ ] Workflow succeeded: `gh run watch` (or the Actions tab).
 - [ ] Image tags landed on GHCR. For `v0.2.0` you get `0.2.0`, `0.2`, `0`,
       `latest`, and a `sha-…` tag.
+- [ ] The tagged `action.yaml` `runs.image` points at the new version's image
+      (not the previous one).
+
+## 4. Publish to the GitHub Marketplace (web UI only)
+
+The Marketplace toggle is **not** exposed by `gh` or the REST API — it can only
+be set through the release page on github.com.
+
+- [ ] Open `https://github.com/Joxtacy/auto-assign-reviewers/releases/edit/vX.Y.Z`
+- [ ] Tick **"Publish this Action to the GitHub Marketplace"**, confirm the
+      category, and **Update release**.
+
+Requires `action.yaml` at the repo root with a `branding:` block (already
+present). Skip this for pre-releases.
 
 ## Gotchas
 
