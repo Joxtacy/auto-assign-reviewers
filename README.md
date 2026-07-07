@@ -32,7 +32,7 @@ jobs:
     
     steps:
       - name: Assign Reviewer
-        uses: Joxtacy/auto-assign-reviewers@v0.1.0
+        uses: Joxtacy/auto-assign-reviewers@v0.1.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           team_members: 'alice,bob,charlie'  # Your team's GitHub usernames
@@ -73,7 +73,7 @@ Alice has the lowest score (19), so she gets assigned!
 ### Basic Configuration
 
 ```yaml
-- uses: Joxtacy/auto-assign-reviewers@v0.1.0
+- uses: Joxtacy/auto-assign-reviewers@v0.1.2
   with:
     github_token: ${{ secrets.GITHUB_TOKEN }}
     team_members: 'alice,bob,charlie'
@@ -84,7 +84,7 @@ Alice has the lowest score (19), so she gets assigned!
 Customize the scoring weights to match your team's preferences:
 
 ```yaml
-- uses: Joxtacy/auto-assign-reviewers@v0.1.0
+- uses: Joxtacy/auto-assign-reviewers@v0.1.2
   with:
     github_token: ${{ secrets.GITHUB_TOKEN }}
     team_members: 'alice,bob,charlie'

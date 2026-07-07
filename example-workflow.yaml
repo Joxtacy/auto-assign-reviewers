@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Assign Reviewer
-        uses: Joxtacy/auto-assign-reviewers@v0.1.0
+        uses: Joxtacy/auto-assign-reviewers@v0.1.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           team_members: "alice,bob,charlie" # Update with your team

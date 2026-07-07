@@ -16,6 +16,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Nothing yet
 
+## [0.1.2] - 2026-07-07
+
+### Added
+- `number_of_reviewers` input to assign the N least-busy reviewers (default: 1)
+
+## [0.1.1] - 2025-12-27
+
+### Changed
+- Switch to pre-built images for faster action startup
+
 ## [0.1.0] - 2025-12-25
 
 ### Added
@@ -35,5 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for pagination when handling many open PRs
 - Rate limit handling for large repositories
 
-[Unreleased]: https://github.com/Joxtacy/auto-assign-reviewers/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/Joxtacy/auto-assign-reviewers/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/Joxtacy/auto-assign-reviewers/compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com/Joxtacy/auto-assign-reviewers/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/Joxtacy/auto-assign-reviewers/releases/tag/v0.1.0
