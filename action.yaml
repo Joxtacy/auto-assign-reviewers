@@ -7,8 +7,14 @@ inputs:
     description: "GitHub token for API access (use secrets.GITHUB_TOKEN)"
     required: true
   team_members:
-    description: 'Comma-separated list of GitHub usernames (e.g., "alice,bob,charlie")'
-    required: true
+    description: 'Comma-separated list of GitHub usernames (e.g., "alice,bob,charlie"). Optional if team_slug is set; the two are combined.'
+    required: false
+  team_slug:
+    description: "Slug of an org team whose members are the reviewer pool (e.g. \"backend\"). Requires a token with org read access (read:org / members:read) — the default GITHUB_TOKEN cannot read team membership. Combined with team_members if both are set."
+    required: false
+  exclude:
+    description: 'Comma-separated GitHub usernames to exclude from the reviewer pool (e.g. a manager who does not review). Applied after combining team_slug and team_members.'
+    required: false
   weight_open_prs:
     description: "Weight multiplier for number of open PRs currently assigned (default: 10)"
     required: false

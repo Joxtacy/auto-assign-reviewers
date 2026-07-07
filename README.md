@@ -100,11 +100,17 @@ Customize the scoring weights to match your team's preferences:
 | Input | Description | Required | Default |
 |-------|-------------|----------|---------|
 | `github_token` | GitHub token (use `secrets.GITHUB_TOKEN`) | Yes | - |
-| `team_members` | Comma-separated GitHub usernames | Yes | - |
+| `team_members` | Comma-separated GitHub usernames. Optional if `team_slug` is set; the two are combined | No\* | - |
+| `team_slug` | Org team slug whose members form the reviewer pool. Combined with `team_members`. **Requires a token with org read access** (see note) | No\* | - |
 | `weight_open_prs` | Weight for currently open PRs | No | `10` |
 | `weight_lines_per_100` | Weight per 100 lines of code | No | `1` |
 | `weight_recent_reviews` | Weight for reviews in last 7 days | No | `3` |
+| `exclude` | Comma-separated usernames to remove from the pool (e.g. a manager who doesn't review) | No | - |
 | `number_of_reviewers` | Number of reviewers to assign | No | `1` |
+
+\* You must set at least one of `team_members` or `team_slug`. If both are set, the reviewer pool is the union (deduped), so you can add people from outside the team.
+
+> **Note on `team_slug` and tokens:** listing org team membership requires a token with org read access — a PAT with the `read:org` scope, or a GitHub App token with `members: read`. The default `secrets.GITHUB_TOKEN` **cannot** read team membership and the action will fail with a permissions error. Pass a suitable token via `github_token` when using `team_slug`. Plain `team_members` works with the default token.
 
 ---
 

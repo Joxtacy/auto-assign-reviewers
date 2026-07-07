@@ -8,10 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Nothing yet
+- `team_slug` input to build the reviewer pool from an org team's members, combined with any manual `team_members` (requires a token with org read access)
+- `exclude` input to remove specific usernames from the reviewer pool (e.g. a manager who doesn't review)
 
 ### Changed
-- Nothing yet
+- `team_members` is now optional when `team_slug` is set; at least one of the two is required
 
 ### Fixed
 - Nothing yet

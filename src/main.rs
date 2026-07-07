@@ -9,6 +9,8 @@ use std::{
 struct Config {
     github_token: String,
     team_members: Vec<String>,
+    team_slug: Option<String>,
+    exclude: Vec<String>,
     weight_open_prs: f64,
     weight_lines: f64,
     weight_recent: f64,
@@ -23,9 +25,20 @@ impl Config {
         Ok(Config {
             github_token: env::var("INPUT_GITHUB_TOKEN").context("Missing INPUT_GITHUB_TOKEN")?,
             team_members: env::var("INPUT_TEAM_MEMBERS")
-                .context("Missing INPUT_TEAM_MEMBERS")?
+                .unwrap_or_default()
                 .split(',')
                 .map(|s| s.trim().to_string())
+                .filter(|s| !s.is_empty())
+                .collect(),
+            team_slug: env::var("INPUT_TEAM_SLUG")
+                .ok()
+                .map(|s| s.trim().to_string())
+                .filter(|s| !s.is_empty()),
+            exclude: env::var("INPUT_EXCLUDE")
+                .unwrap_or_default()
+                .split(',')
+                .map(|s| s.trim().to_string())
+                .filter(|s| !s.is_empty())
                 .collect(),
             weight_open_prs: env::var("INPUT_WEIGHT_OPEN_PRS")
                 .unwrap_or_else(|_| "10".to_string())
@@ -100,6 +113,52 @@ async fn fetch_recent_reviews(
         .context(format!("Failed to search recent reviews for @{}", username))?;
 
     Ok(result.total_count.unwrap_or(0) as usize)
+}
+
+/// Builds the reviewer roster: the manual `team_members` list unioned with the
+/// members of `team_slug` (if set), deduped. Either source may be empty, but the
+/// result must not be.
+async fn resolve_team_members(octocrab: &Octocrab, config: &Config) -> Result<Vec<String>> {
+    let mut members: HashSet<String> = config.team_members.iter().cloned().collect();
+
+    if let Some(slug) = &config.team_slug {
+        println!("👥 Fetching members of team @{}/{}...", config.repo_owner, slug);
+        let first_page = octocrab
+            .teams(&config.repo_owner)
+            .members(slug)
+            .per_page(100)
+            .send()
+            .await
+            .context(format!(
+                "Failed to list members of team '{}'. This needs a token with org read access \
+                 (PAT with read:org, or an App token with members:read) — the default \
+                 GITHUB_TOKEN cannot read team membership.",
+                slug
+            ))?;
+        let team = octocrab
+            .all_pages(first_page)
+            .await
+            .context("Failed to paginate team members")?;
+        for author in team {
+            members.insert(author.login);
+        }
+    }
+
+    if members.is_empty() {
+        anyhow::bail!("No reviewers configured. Set team_members, team_slug, or both.");
+    }
+
+    for excluded in &config.exclude {
+        members.remove(excluded);
+    }
+
+    if members.is_empty() {
+        anyhow::bail!("No reviewers left after applying `exclude`: it removed everyone in the pool.");
+    }
+
+    let mut list: Vec<String> = members.into_iter().collect();
+    list.sort();
+    Ok(list)
 }
 
 async fn calculate_scores(
@@ -323,13 +382,15 @@ async fn assign_reviewer(
 async fn main() -> Result<()> {
     println!("🔍 Parsing configuration from environment...\n");
 
-    let config = Config::from_env()?;
+    let mut config = Config::from_env()?;
 
     println!("✅ Configuration loaded successfully!");
     println!("\n📋 Config Details:");
     println!("  Repository: {}/{}", config.repo_owner, config.repo_name);
     println!("  PR Number: {}", config.pr_number);
-    println!("  Team Members: {:?}", config.team_members);
+    println!("  Team Slug: {:?}", config.team_slug);
+    println!("  Manual Team Members: {:?}", config.team_members);
+    println!("  Exclude: {:?}", config.exclude);
     println!("  Number of Reviewers: {:?}", config.number_of_reviewers);
     println!("\n⚖️  Weights:");
     println!("  Open PRs: {}", config.weight_open_prs);
@@ -345,6 +406,10 @@ async fn main() -> Result<()> {
         .context("Failed to create GitHub API client")?;
 
     println!("✅ Connected to GitHub API");
+
+    println!("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    config.team_members = resolve_team_members(&octocrab, &config).await?;
+    println!("  Reviewer roster ({}): {:?}", config.team_members.len(), config.team_members);
 
     println!("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     let pr_author = fetch_current_pr(

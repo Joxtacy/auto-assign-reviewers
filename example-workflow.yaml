@@ -19,6 +19,13 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           team_members: "alice,bob,charlie" # Update with your team
+          # Or draw the pool from an org team (combined with team_members if both set).
+          # Requires a token with org read access — the default GITHUB_TOKEN can't
+          # read team membership. Pass a PAT (read:org) or App token instead:
+          #   github_token: ${{ secrets.REVIEWER_ASSIGN_TOKEN }}
+          #   team_slug: "backend"
+          # Optional: drop people who shouldn't be assigned (e.g. your manager)
+          # exclude: "the-manager"
           # Optional: customize weights
           weight_open_prs: 10
           weight_lines_per_100: 1
