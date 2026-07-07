@@ -45,9 +45,19 @@ gh release create v0.2.0-rc.1 --prerelease --title "v0.2.0-rc.1" --target main
 
 ## Gotchas
 
-- **`latest` moves on any release cut from `main`, including pre-releases** — the
-  workflow keys `latest` off `enable={{is_default_branch}}`, not the release
-  type. A pre-release from a *plain* tag (like `v0.1.1`) will overwrite `latest`.
-- **Pre-release semver tags** (e.g. `v0.2.0-rc.1`) are treated as pre-release by
-  `docker/metadata-action`: it emits only the full `0.2.0-rc.1` tag, not the
-  short `0.2`/`0` tags, and does not touch `latest`.
+- **Tag shape controls `latest`, not GitHub's "pre-release" checkbox.**
+  `docker/metadata-action` only parses the git tag string — it never sees the
+  release's pre-release flag. So what matters is whether the tag is a prerelease
+  semver:
+  - Stable tag `v0.2.0` → emits `0.2.0`, `0.2`, `0`, **and `latest`**. Ticking
+    GitHub's "pre-release" box does **not** stop `latest` from moving.
+  - Prerelease tag `v0.2.0-rc.1` → emits **only** `0.2.0-rc.1` (+ `sha-…`). No
+    `0.2`/`0`, no `latest`.
+  - **To pre-release without touching `latest`, the tag must carry a prerelease
+    suffix** (`-rc.1`, `-beta.1`, …).
+- **`type=raw,value=latest,enable={{is_default_branch}}` does not fire on
+  releases.** A `release: published` event has a tag ref, so `is_default_branch`
+  is false. That raw `latest` only applies on the `workflow_dispatch` test path
+  (built from `main`) — which is how the current `latest` tag was set.
+- **`type=semver,pattern={{version}}` strips the leading `v`**, so tag `v0.2.0`
+  becomes image tag `0.2.0`.
