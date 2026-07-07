@@ -229,6 +229,10 @@ See [TESTING.md](TESTING.md) for detailed instructions on using `act` to test th
 - 🧪 **Testing**: Add unit tests, integration tests
 - 🌍 **Localization**: Translate README to other languages
 
+### Releasing
+
+Maintainers: see [RELEASING.md](RELEASING.md) for the release / pre-release checklist.
+
 ### Questions?
 
 - Open an [issue](https://github.com/Joxtacy/auto-assign-reviewers/issues) for bugs or feature requests
